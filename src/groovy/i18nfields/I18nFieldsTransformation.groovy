@@ -39,6 +39,7 @@ public class I18nFieldsTransformation implements ASTTransformation {
 	}
 
 	private void i18nalizeFields(ClassNode classNode) {
+		addLocalesMap(locales(), classNode)
 		for (field in getFieldsToI18nalize(classNode)) {
 			i18nalizeField(field, classNode)
 		}
@@ -50,9 +51,7 @@ public class I18nFieldsTransformation implements ASTTransformation {
 	}
 
 	private void i18nalizeField(String field, ClassNode classNode) {
-		def locales = locales()
-		addLocalesMap(locales, classNode)
-		addI18nFields(locales, classNode, field)
+		addI18nFields(locales(), classNode, field)
 		makeFieldTransient(field, classNode)
 		addGettersAndSetters(field, classNode)
 	}
