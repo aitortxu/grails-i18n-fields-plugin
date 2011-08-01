@@ -27,7 +27,7 @@ class I18nFieldsGrailsPlugin {
 
 	def author = "Jorge Uriarte"
 	def authorEmail = "jorge.uriarte@omelas.net"
-	def title = "I18N Fields"
+	def title = "i18n Fields"
 	def description = "This plugin provides an easy way of declarativily localize database fields of your content tables."
 	def documentation = "http://grails.org/plugin/i18n-fields"
 
