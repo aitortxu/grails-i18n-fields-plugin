@@ -10,8 +10,17 @@ class I18nFieldsGrailsPlugin {
 	def grailsVersion = "1.3 > *"
 	def dependsOn = [:]
 	def pluginExcludes = [
-			"grails-app",
-			"web-app"
+			"grails-app/i18n/*",
+			"grails-app/controllers/i18nfields/*",
+			"grails-app/services/i18nfields/*",
+			"grails-app/taglib/i18nfields/*",
+			"grails-app/views/*",
+			"grails-app/views/layouts/*",
+			"web-app/css/*",
+			"web-app/images/*",
+			"web-app/images/skin/*",
+			"web-app/js/*",
+			"web-app/js/prototype/*",
 	]
 
 	def config = ConfigurationHolder.config
