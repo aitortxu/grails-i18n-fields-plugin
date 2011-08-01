@@ -21,7 +21,7 @@ class I18nFieldsTransformationTests {
 		ConfigurationHolder configurationHolder = new ConfigurationHolder()
 		ConfigObject config = new ConfigObject()
 		configurationHolder.setConfig(config)
-		ConfigurationHolder.config.i18nFields.locales = ["es", "es_MX", "en_US", "kl_KL"]
+		ConfigurationHolder.config.i18n_fields.locales = ["es", "es_MX", "en_US", "kl_KL"]
 		I18nFieldsTransformation.metaClass.ConfigurationHolder = configurationHolder
 	}
 
