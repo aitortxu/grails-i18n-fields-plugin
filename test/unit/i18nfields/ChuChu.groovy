@@ -5,4 +5,7 @@ class ChuChu {
 	def name
 	def description
 	static i18n_fields = ["name", "description"]
+	static constraints = {
+		name(nullable:true)
+	}
 }

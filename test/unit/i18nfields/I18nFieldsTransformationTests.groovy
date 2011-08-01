@@ -107,6 +107,12 @@ class I18nFieldsTransformationTests {
 		assertThat chuchu.getName(new Locale("es", "AR")), is("Nombre")
 	}
 
+	@Test
+	void "Adds nullable constraint to localized fields if original is nullable"() {
+		// No sé cómo testear esto
+		fail()
+	}
+
 	private def createBlabla() {
 		blabla = createInstanceFromFile("./test/unit/i18nfields/Blabla.groovy")
 	}
