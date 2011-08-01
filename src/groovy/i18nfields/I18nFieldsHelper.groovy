@@ -3,7 +3,7 @@ package i18nfields
 import org.springframework.context.i18n.LocaleContextHolder
 
 class I18nFieldsHelper {
-	public static transients_model = ['fieldname'];
+	public static transients_model = ["fieldname"];
 
 	static void setLocale(Locale locale) {
 		LocaleContextHolder.setLocale(locale)

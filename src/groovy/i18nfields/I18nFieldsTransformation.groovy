@@ -170,7 +170,6 @@ public class I18nFieldsTransformation implements ASTTransformation {
 
 	private addProxyGetter(String field, ClassNode classNode) {
 		def methodName = GrailsClassUtils.getGetterName(field)
-		Locale l = new Locale('es', 'MX')
 		def code = """
 def locale = org.springframework.context.i18n.LocaleContextHolder.getLocale()
 if (locales.containsKey(locale.language) && !locales[locale.language].contains(locale.country))

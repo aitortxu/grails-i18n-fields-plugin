@@ -22,13 +22,13 @@ class I18nFieldsHelperTests {
 	void "Proxies setLocale calls over to LocaleContextHolder"() {
 		mockedLocaleContextHolder.static.setLocale(any(Locale)).once()
 		play {
-			I18nFieldsHelper.setLocale(new Locale('es', 'ES'))
+			I18nFieldsHelper.setLocale(new Locale("es", "ES"))
 		}
 	}
 
 	@Test
 	void "Proxies getLocale calls over to LocaleContextHolder"() {
-		def locale = new Locale('es', 'ES')
+		def locale = new Locale("es", "ES")
 		mockedLocaleContextHolder.static.getLocale().returns(locale).once()
 		play {
 			assertThat I18nFieldsHelper.getLocale(), is(locale)
@@ -40,8 +40,8 @@ class I18nFieldsHelperTests {
 		// TODO: Don't reproduce implementation in test
 		// Currently I'd use a partial mock to ignore calls to getLocale,
 		// but as they're static calls, I don't know how to do it
-		def oldLocale = new Locale('es', 'ES')
-		def newLocale = new Locale('kl', 'KL')
+		def oldLocale = new Locale("es", "ES")
+		def newLocale = new Locale("kl", "KL")
 		Closure mockedClosure = mock(Closure)
 		ordered {
 			mockedLocaleContextHolder.static.getLocale().returns(oldLocale)
