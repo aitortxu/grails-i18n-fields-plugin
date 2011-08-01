@@ -1,0 +1,6 @@
+*.iml
+target
+stacktrace.log
+out
+.idea
+plugin.xml
