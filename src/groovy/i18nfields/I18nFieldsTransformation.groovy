@@ -88,7 +88,7 @@ public class I18nFieldsTransformation implements ASTTransformation {
 	}
 
 	private Map pluginConfig() {
-		ConfigurationHolder.config?.i18nFields ? ConfigurationHolder.config.i18nFields : [:]
+		ConfigurationHolder.config?.containsKey(I18N_FIELDS_DEFINITION_FIELD_NAME) ? ConfigurationHolder.config.get(I18N_FIELDS_DEFINITION_FIELD_NAME) : [:]
 	}
 
 	private Collection filterInvalidLocales(Collection configuredLocales) {
@@ -106,7 +106,7 @@ public class I18nFieldsTransformation implements ASTTransformation {
 	private void logInvalidLocales(invalidLocales) {
 		// TODO: Use log4j
 		if (invalidLocales.size() > 0)
-			println "[i18nFieldsPlugin] Ignoring ${invalidLocales} invalid locale(s)"
+			println "[i18n_fields] Ignoring ${invalidLocales} invalid locale(s)"
 	}
 
 	private void addLocalesMap(Collection locales, ClassNode classNode) {
@@ -124,7 +124,7 @@ public class I18nFieldsTransformation implements ASTTransformation {
 		}
 		def localesField = new FieldNode(LOCALES_DEFINITION_FIELD_NAME, ACC_PUBLIC | ACC_STATIC, new ClassNode(Object.class), classNode, localesFieldMap)
 		// TODO: Use log4j
-		println "[i18nFieldsPlugin] Adding locales static field to ${classNode.name}"
+		println "[i18n_fields] Adding locales static field to ${classNode.name}"
 		classNode.addField(localesField)
 	}
 
@@ -139,7 +139,7 @@ public class I18nFieldsTransformation implements ASTTransformation {
 
 	private void addI18nField(String fieldName, ClassNode classNode) {
 		// TODO: Use log4j
-		println "[i18nFieldsPlugin] Adding '${fieldName}' field to ${classNode.name}"
+		println "[i18n_fields] Adding '${fieldName}' field to ${classNode.name}"
 		classNode.addProperty(fieldName, Modifier.PUBLIC, new ClassNode(String.class), new ConstantExpression(null), null, null)
 	}
 
@@ -147,7 +147,7 @@ public class I18nFieldsTransformation implements ASTTransformation {
 		FieldNode transientsField = getTransientsField(classNode)
 		ListExpression transientFieldList = transientsField.getInitialExpression()
 		// TODO: Use log4j
-		println "[i18nFieldsPlugin] Making '${field}' field of class ${classNode.name} transient"
+		println "[i18n_fields] Making '${field}' field of class ${classNode.name} transient"
 		transientFieldList.addExpression(new ConstantExpression(field))
 	}
 
@@ -165,7 +165,7 @@ public class I18nFieldsTransformation implements ASTTransformation {
 	private void addTransientsField(ClassNode classNode) {
 		def transients = new FieldNode(TRANSIENTS_DEFINITION_FIELD_NAME, ACC_PUBLIC | ACC_STATIC, new ClassNode(Object.class), classNode, new ListExpression())
 		// TODO: Use log4j
-		println "[i18nFieldsPlugin] Adding transients static field to ${classNode.name}"
+		println "[i18n_fields] Adding transients static field to ${classNode.name}"
 		classNode.addField(transients)
 	}
 
@@ -179,7 +179,7 @@ return this.\"${field}_\${locale}\"
 """
 		def codeBlock = new AstBuilder().buildFromString(code).pop()
 		// TODO: Use log4j
-		println "[i18nFieldsPlugin] Adding '${methodName}()' proxy method to ${classNode.name}"
+		println "[i18n_fields] Adding '${methodName}()' proxy method to ${classNode.name}"
 		classNode.addMethod(getNewMethod(methodName, [] as Parameter[], codeBlock))
 	}
 
@@ -189,7 +189,7 @@ return this.\"${field}_\${locale}\"
 		def codeBlock = new AstBuilder().buildFromString(code).pop()
 		def parameters = [new Parameter(ClassHelper.make(String, false), "value")] as Parameter[]
 		// TODO: Use log4j
-		println "[i18nFieldsPlugin] Adding '${methodName}(String value)' proxy method to ${classNode.name}"
+		println "[i18n_fields] Adding '${methodName}(String value)' proxy method to ${classNode.name}"
 		classNode.addMethod(getNewMethod(methodName, parameters as Parameter[], codeBlock))
 	}
 
@@ -204,7 +204,7 @@ return this.\"${field}_\${locale}\"
 		def parameters = [new Parameter(ClassHelper.make(Locale, false), "locale")] as Parameter[]
 		classNode.addMethod(getNewMethod(methodName, parameters, codeBlock))
 		// TODO: Use log4j
-		println "[i18nFieldsPlugin] Adding '${methodName}(Locale locale)' helper method to ${classNode.name}"
+		println "[i18n_fields] Adding '${methodName}(Locale locale)' helper method to ${classNode.name}"
 	}
 
 	private addLocalizedSetter(String field, ClassNode classNode) {
@@ -217,7 +217,7 @@ return this.\"${field}_\${locale}\"
 		] as Parameter[]
 		classNode.addMethod(getNewMethod(methodName, parameters, codeBlock))
 		// TODO: Use log4j
-		println "[i18nFieldsPlugin] Adding '${methodName}(String value, Locale locale)' helper method to ${classNode.name}"
+		println "[i18n_fields] Adding '${methodName}(String value, Locale locale)' helper method to ${classNode.name}"
 	}
 
 	private MethodNode getNewMethod(String methodName, Parameter[] parameters, ASTNode codeBlock) {

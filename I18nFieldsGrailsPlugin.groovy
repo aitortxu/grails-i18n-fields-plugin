@@ -27,7 +27,7 @@ class I18nFieldsGrailsPlugin {
 
 	def author = "Jorge Uriarte"
 	def authorEmail = "jorge.uriarte@omelas.net"
-	def title = "I18n Fields"
+	def title = "I18N Fields"
 	def description = "This plugin provides an easy way of declarativily localize database fields of your content tables."
 	def documentation = "http://grails.org/plugin/i18n-fields"
 
@@ -35,7 +35,7 @@ class I18nFieldsGrailsPlugin {
 		['controller', 'service', 'tagLib', 'codec', 'bootstrap'].each {
 			application."${it}Classes".each { theClass ->
 				// TODO: Use log4j
-				println "[i18nFieldsPlugin] Adding 'withLocale' method to ${theClass.name} ${it} Class"
+				println "[i18n_fields] Adding 'withLocale' method to ${theClass.name} ${it} Class"
 				theClass.metaClass.withLocale = I18nFieldsHelper.withLocale
 			}
 		}
