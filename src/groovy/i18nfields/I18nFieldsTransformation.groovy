@@ -26,6 +26,7 @@ import org.codehaus.groovy.ast.expr.MapExpression
 public class I18nFieldsTransformation implements ASTTransformation {
 	public static final String I18N_FIELDS_DEFINITION_FIELD_NAME = "i18n_fields"
 	public static final String TRANSIENTS_DEFINITION_FIELD_NAME = "transients"
+	public static final String LOCALES_DEFINITION_FIELD_NAME = "locales"
 
 	void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
 		if (!isValidAstNodes(astNodes))
@@ -83,7 +84,7 @@ public class I18nFieldsTransformation implements ASTTransformation {
 	}
 
 	private Collection getConfiguredLocales() {
-		return pluginConfig().locales ? pluginConfig().locales.collect { it.trim() } : []
+		return pluginConfig().containsKey(LOCALES_DEFINITION_FIELD_NAME) ? pluginConfig().get(LOCALES_DEFINITION_FIELD_NAME).collect { it.trim() } : []
 	}
 
 	private Map pluginConfig() {
@@ -121,7 +122,7 @@ public class I18nFieldsTransformation implements ASTTransformation {
 		mapEntryExpressions.each {
 			localesFieldMap.addMapEntryExpression(new ConstantExpression(it.key), it.value)
 		}
-		def localesField = new FieldNode("locales", ACC_PUBLIC | ACC_STATIC, new ClassNode(Object.class), classNode, localesFieldMap)
+		def localesField = new FieldNode(LOCALES_DEFINITION_FIELD_NAME, ACC_PUBLIC | ACC_STATIC, new ClassNode(Object.class), classNode, localesFieldMap)
 		// TODO: Use log4j
 		println "[i18nFieldsPlugin] Adding locales static field to ${classNode.name}"
 		classNode.addField(localesField)
@@ -162,7 +163,7 @@ public class I18nFieldsTransformation implements ASTTransformation {
 	}
 
 	private void addTransientsField(ClassNode classNode) {
-		def transients = new FieldNode("transients", ACC_PUBLIC | ACC_STATIC, new ClassNode(Object.class), classNode, new ListExpression())
+		def transients = new FieldNode(TRANSIENTS_DEFINITION_FIELD_NAME, ACC_PUBLIC | ACC_STATIC, new ClassNode(Object.class), classNode, new ListExpression())
 		// TODO: Use log4j
 		println "[i18nFieldsPlugin] Adding transients static field to ${classNode.name}"
 		classNode.addField(transients)
@@ -172,7 +173,7 @@ public class I18nFieldsTransformation implements ASTTransformation {
 		def methodName = GrailsClassUtils.getGetterName(field)
 		def code = """
 def locale = org.springframework.context.i18n.LocaleContextHolder.getLocale()
-if (locales.containsKey(locale.language) && !locales[locale.language].contains(locale.country))
+if (${LOCALES_DEFINITION_FIELD_NAME}.containsKey(locale.language) && !${LOCALES_DEFINITION_FIELD_NAME}[locale.language].contains(locale.country))
 	locale = new Locale(locale.language)
 return this.\"${field}_\${locale}\"
 """
@@ -195,7 +196,7 @@ return this.\"${field}_\${locale}\"
 	private addLocalizedGetter(String field, ClassNode classNode) {
 		def methodName = GrailsClassUtils.getGetterName(field)
 		def code = """
-if (locales.containsKey(locale.language) && !locales[locale.language].contains(locale.country))
+if (${LOCALES_DEFINITION_FIELD_NAME}.containsKey(locale.language) && !${LOCALES_DEFINITION_FIELD_NAME}[locale.language].contains(locale.country))
 	locale = new Locale(locale.language)
 return this.\"${field}_\${locale}\"
 """
